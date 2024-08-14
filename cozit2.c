@@ -216,3 +216,73 @@ void runde(Queue *q, Graph *g)
     freeQueue(winners);
     freeQueue(losers);
 }
+int IsEmptyGraph(Graph *q)
+{
+    return q->head == NULL;
+}
+
+void sortQueue(Graph *g)
+{
+    Nod *current = g->head;
+    Nod *index = NULL;
+    char *temp_team_name;
+    float temp_summary;
+    int temp_position;
+
+    if (IsEmptyGraph(g))
+    {
+        printf("Graful este gol.\n");
+        return;
+    }
+    else
+    {
+        while (current != NULL)
+        {
+            index = current->next;
+
+            while (index != NULL)
+            {
+                if (current->score > index->score)
+                {
+                    // Swap team names
+                    temp_team_name = current->team_name;
+                    current->team_name = index->team_name;
+                    index->team_name = temp_team_name;
+
+                    // Swap summaries
+                    temp_summary = current->score;
+                    current->score = index->score;
+                    index->score = temp_summary;
+
+                    temp_position = current->position;
+                    current->position = index->position;
+                    index->position = temp_position;
+                }
+                else if(current->score==index->score)
+                {
+                    if(current->position>index->position)
+                    {
+                        // Swap team names
+                        temp_team_name = current->team_name;
+                        current->team_name = index->team_name;
+                        index->team_name = temp_team_name;
+
+                        // Swap summaries
+                        temp_summary = current->score;
+                        current->score = index->score;
+                        index->score = temp_summary;
+
+                        temp_position = current->position;
+                    current->position = index->position;
+                    index->position = temp_position;
+                    }
+                }
+
+                index = index->next;
+            }
+
+            current = current->next;
+        }
+    }
+}
+    

@@ -57,6 +57,7 @@ int main()
         temp = temp->next;
     }
 
+    sortQueue(g);
     temp = g->head;
     while (temp != NULL)
     {

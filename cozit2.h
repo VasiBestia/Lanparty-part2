@@ -24,5 +24,7 @@ int IsEmpty(Queue *q);
 void runde(Queue *q, Graph *g);
 void deleteNode(Queue *q, float value);
 int findNodeQueue(char *team_name, Queue *q);
+int IsEmptyGraph(Graph *g);
+void sortQueue(Graph *g);
 
 #endif
