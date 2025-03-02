@@ -285,4 +285,3 @@ void sortQueue(Graph *g)
         }
     }
 }
-    
