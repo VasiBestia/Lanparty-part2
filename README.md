@@ -1,39 +1,79 @@
-Proiectarea algoritmilor Tema
-# Grafuri și clasamente
+# 🏆 Graphs & Rankings in Tournaments — Inspired by **Lanparty** 🎮
 
-## 1. Descrierea problemei
+Welcome to a project that takes the simple idea of tournament rankings to the next level using **graphs** and **network analysis**! Based on the simulation from **Lanparty** (our previous repo 🕹️), this project dives deeper into what it means to **rank players fairly** in competitive scenarios.
 
-În cazul unui singur turneu, cum e cel pe care l-am simulat în Tema 1, realizarea clasamentului participanților nu pune probleme: locul întâi este ocupat de câștigătorul finalei, pe ultimul loc se clasează jucătorul/echipa care nu a câștigat niciun meci etc.
+---
 
-Însă atunci când se iau în considerare rezultatele în mai multe competiții, lucrurile se complică: doi jucători pot avea același număr de victorii, însă dacă unul din ei a avut o victorie împotriva unui campion mondial, această victorie ar trebui să conteze mai mult. Din acest motiv, în ultima vreme, atunci când se doresc realizarea clasamentelor (pentru sportivi, spre exemplu), se folosesc metode care analizează proprietățile rețelei [2, 3, 4], pentru a putea distinge între astfel de situații.
+## 🎯 Problem Description
 
-### 1.1 Modelarea victoriilor utilizând grafuri
+In a single tournament (like the one we simulated in **Lanparty**), ranking players is straightforward:
 
-Rețeaua sportivilor este un graf orientat în care fiecare vârf reprezintă un sportiv, iar între doi sportivi i și j există muchie de la i către j dacă cei doi au disputat un meci, iar j a câștigat. În cazul în care cei doi joacă mai multe meciuri, reprezentarea poate fi de multigraf (câte o muchie pentru fiecare meci) sau se pot agrega rezultatele tuturor meciurile disputate de cei doi. De asemenea, graful poate fi ponderat, unde ponderea muchiei reprezintă numărul de victorii ale sportivului j în meciurile cu i.
+- 🥇 Winner of the final = 1st place
+- ❌ Player who lost all matches = last place
 
-Figura 1.1, reprodusă aici din lucrarea [5], prezintă în panoul A graful jucătorilor de tenis care au fost clasati numărul 1 în ATP. Nuanța de gri a muchiilor codifică ponderea acestora. Arborele din panoul B corespunde unui singur campionat, cum este cel pe care l-am simulat în Tema 1, și este, practic, un subgraf al grafului mare. Panoul C reprezintă graful asociat acestui campionat.
+But what happens when we consider results from **multiple tournaments**? 🤔  
+Two players may have the same number of wins, but not all wins are equal — for example, a win against a world champion should count more than one against a beginner.
 
-### 1.2 Calculul clasamentului
+That’s where **graph-based ranking** comes in. This approach is increasingly used in real-world sports analytics 🏀⚽🏐 and relies on network properties to build more nuanced, fair rankings.
 
-În general, metodele bazate pe grafuri pentru calculul clasamentelor utilizează anumite proprietăți ale structurii grafului pentru a determina importanța unui jucător. Metoda pe care o veți implementa se aseamănă cu algoritmul PageRank [1], creat de Google pentru a clasa site-urile web.
+---
 
-Implementarea PageRank utilizează noțiuni pe care le veți învăța abia în Anul II (vectorii proprii ai grafului), însă principiul îl putem descrie pe scurt acum. PageRank se bazează pe conceptul de centralitate, care este o măsură a influenței unui nod dintr-o rețea. Un anumit nod va fi important dacă are multe legături către noduri cu scor mare (adică importante la rândul lor). Concret, legăturile pe care un nod le are cu noduri cu scor mare contribuie mai mult la scorul respectivului nod decât legăturile cu noduri cu scoruri mici.
+## 🔗 Graph Modeling of Victories
 
-Această idee este utilizată și în [5] pentru a clasa jucătorii de tenis, metodă pe care o veți implementa și voi. Calculul clasamentului pentru întreg graful presupune rezolvarea unui sistem de ecuații pentru care nu se cunoaște o soluție analitică, dar care poate fi calculată prin metode iterative (mai multe despre subiectul acesta în anul II).
+We model players and their victories using a **directed graph**:
 
-## 2. Cerințe
+- 🎯 Each **node** = a player or team  
+- 🔁 A **directed edge** from player A to player B means: **A lost to B**
 
-1. Creati graful turneului (va semăna cu cel din Figura 1.1, panoul C).
-2. Calculați prestigiul fiecărei echipe, ca urmare a participării la turneu, utilizând formula din (1), cu q = 0.15. Scrieți într-un fișier prestigiul echipei, pe 4 zecimale, urmat de spațiu și numele echipei.
+Depending on how many matches two players had, we can:
+- Use a **multigraph** (multiple edges per match)
+- Or a **weighted graph**, where the edge weight = number of wins
 
-Bibliografie:
+This forms a **Victory Graph** 🕸️ where edge thickness or weight reflects how dominant one player is over another.
 
-[1] Sergey Brin and Lawrence Page. The anatomy of a large-scale hypertextual web search engine. Computer Networks and ISDN Systems, Proceedings of the Seventh International World Wide Web Conference, 30(1):107–117, 1998. [Link](https://snap.stanford.edu/class/cs224w-readings/Brin98Anatomy.pdf).
+---
 
-[2] Henry E Daniels. Round-robin tournament scores. Biometrika, 56(2):295–299, 1969.
+## 📊 Ranking Using Graph Centrality
 
-[3] J. W. Moon and N. J. Pullman. On generalized tournament matrices. SIAM Review, 12(3):384–399, 1970.
+To compute the final ranking (or **prestige**) of each player, we use a method similar to **PageRank** — the algorithm Google originally used to rank websites 🌐📈.
 
-[4] Shun Motegi and Naoki Masuda. A network-based dynamical ranking system for competitive sports. Scientific Reports, 2(1):2045–2322, 2012.
+### Key Idea:
+> A player is important not just by how many wins they have, but **who they beat**.  
+> Beating strong players increases your prestige more than beating weak ones.
 
-[5] Filippo Radicchi. Who is the best player ever? a complex network analysis of the history of professional tennis. PloS one, 6(2):e17249, 2011. [Link](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0017249).
+This concept is called **centrality**, and it's calculated through **iterative methods** (covered in more detail in Year 2 📚).
+
+---
+
+## 🔧 What You Have to Do
+
+### ✅ 1. Build the Victory Graph
+Just like the one in Figure 1.1 (panel C) from Radicchi’s paper 📘.
+
+### ✅ 2. Compute Team Prestige
+Using the prestige formula (Equation 1), with a damping factor `q = 0.15` 🧮  
+Write the prestige of each team in a file, formatted like:
+0.5312 TeamName
+0.3278 AnotherTeam
+
+Sorted, of course, by importance 😉
+
+---
+
+## 📚 References
+
+- [1] Brin & Page, *The Anatomy of a Large-Scale Hypertextual Web Search Engine*, 1998.
+- [2–4] Various tournament and graph theory research.
+- [5] Radicchi, *Who is the best player ever?*, PLoS ONE, 2011.
+
+---
+
+## 💡 Notes
+
+This project builds on the **Lanparty** repo (from our earlier homework) and takes it further by introducing network-based thinking for tournament analysis. Perfect for those curious about data science, networks, and competitive fairness 🧠⚖️.
+
+---
+
+**Let the smartest player win — not just the one with the most easy matches!** 🎲👑
+
+
