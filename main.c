@@ -1,6 +1,6 @@
-#include "cozit2.c"
-#include "cozit2.h"
-#include "grafurit2.c"
+#pragma once
+#include "fisiere.h/cozit2.h"
+#include "fisiere.h/grafurit2.h"
 #include <math.h>
 #define Teams_Number 32
 #define Prestige_factor 0.15

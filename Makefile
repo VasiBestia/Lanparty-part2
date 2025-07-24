@@ -1,5 +1,5 @@
 build:
-	gcc main.c cozit2.h grafurit2.h -o tema2 -lm
+	gcc fisiere.c/*.c main.c -I./fisiere.h -o main
 
-clean: 
-	del -f tema2
+clean:
+	del -f main
